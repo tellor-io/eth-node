@@ -21,6 +21,9 @@ spec:
         - "--http"
         - "--http.addr=0.0.0.0"
         - "--http.vhosts=*"
+        - "--http.api=eth,net,web3,txpool"
+        - "--ws"
+        - "--ws.addr=0.0.0.0"
         volumeMounts:
         - name: data
           mountPath: /root/.ethereum

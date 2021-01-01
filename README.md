@@ -1,29 +1,32 @@
-# eth-node
-This repository contains k8s manifest files for deploying a geth node on top of k8s.
+# This repository contains k8s manifest files for deploying a geth node on top of k8s.
 
 ## Prerequisites
 - Kubernetes 1.12+
 
 ## Quickstart
-Generate a basic auth user and password using htpasswd:
-```console
-$ htpasswd -c auth foo
-New password: <bar>
-New password:
-Re-type new password:
-Adding password for user foo
+
+ - ### Install the nginx ingress
+https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke
+ - ### Generate a basic auth user and password using htpasswd:
+```bash
+htpasswd -c auth geth
 ```
-Note:  It's important the file generated is named auth (actually - that the secret has a key data.auth), otherwise the ingress-controller returns a 503.  
 
-
-Create a basic auth secret:
-```console
-$ kubectl create secret generic geth-basic-auth --from-file=auth
-secret "geth-basic-auth" created
+ - ### Create a basic auth secret:
+```bash
+kubectl create secret generic geth --from-file=auth
 ```
 
 
-Create k8s resources:
-```console
-$ kubectl apply -f <cloned-repo>
+ - ### Create the resources:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/tellor-io/eth-node/main/storage.yml
+kubectl apply -f https://raw.githubusercontent.com/tellor-io/eth-node/main/deploy.yml
+kubectl apply -f https://raw.githubusercontent.com/tellor-io/eth-node/main/ingress.yml
+```
+or from a cloned repository
+```
+kubectl apply -f storage.yml
+kubectl apply -f deploy.yml
+kubectl apply -f ingress.yml
 ```
