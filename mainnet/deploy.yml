@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: geth
+  labels:
+    app: geth
+spec:
+  serviceName: geth
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geth
+  template:
+    metadata:
+      labels:
+        app: geth
+    spec:
+      containers:
+      - image: ethereum/client-go:latest
+        name: geth
+        args:
+        - "--http"
+        - "--http.addr=0.0.0.0"
+        - "--http.vhosts=*"
+        - "--http.api=eth,net,web3,txpool"
+        - "--ws"
+        - "--ws.addr=0.0.0.0"
+        - "--cache=3000"
+        volumeMounts:
+        - name: data
+          mountPath: /root/.ethereum
+          subPath: geth-data
+        ports:
+        - name: mainnet-http
+          containerPort: 8545
+        - name: mainnet-p2p
+          containerPort: 30303
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: geth
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: export-mainnet
+  labels:
+    app: export-mainnet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: export-mainnet
+  template:
+    metadata:
+      labels:
+        app: export-mainnet
+    spec:
+      containers:
+      - image: hunterlong/gethexporter:latest
+        name: export-mainnet
+        env:
+          - name: GETH
+            value: "http://geth.default:8545"
+        ports:
+        - name: export-mainnet
+          containerPort: 9090
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: export-mainnet
+  labels:
+    app: export-mainnet
+spec:
+  selector:
+    app: export-mainnet
+  ports:
+  - name: export-mainnet
+    port: 9090
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: geth
+  labels:
+    app: geth
+spec:
+  selector:
+    app: geth
+  ports:
+  - name: mainnet-p2p
+    port: 30303
+  - name: mainnet-http
+    port: 8545

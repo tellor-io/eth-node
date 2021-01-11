@@ -19,14 +19,12 @@ kubectl create secret generic geth --from-file=auth
 
 
  - ### Create the resources:
+NETWORK with either mainnet or rinkeby.
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/tellor-io/eth-node/main/storage.yml
-kubectl apply -f https://raw.githubusercontent.com/tellor-io/eth-node/main/deploy.yml
-kubectl apply -f https://raw.githubusercontent.com/tellor-io/eth-node/main/ingress.yml
-```
-or from a cloned repository
-```
-kubectl apply -f storage.yml
-kubectl apply -f deploy.yml
-kubectl apply -f ingress.yml
+git clone https://github.com/tellor-io/eth-node
+cd eth-node
+export NETWORK=mainnet
+kubectl apply -f $NETWORK/storage.yml
+kubectl apply -f $NETWORK/deploy.yml
+kubectl apply -f $NETWORK/ingress.yml
 ```

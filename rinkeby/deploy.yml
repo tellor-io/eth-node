@@ -1,95 +1,97 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: geth
+  name: geth-rinkeby
   labels:
-    app: geth
+    app: geth-rinkeby
 spec:
-  serviceName: geth
+  serviceName: geth-rinkeby
   replicas: 1
   selector:
     matchLabels:
-      app: geth
+      app: geth-rinkeby
   template:
     metadata:
       labels:
-        app: geth
+        app: geth-rinkeby
     spec:
       containers:
       - image: ethereum/client-go:latest
-        name: geth
+        name: geth-rinkeby
         args:
+        - "--rinkeby"
         - "--http"
         - "--http.addr=0.0.0.0"
         - "--http.vhosts=*"
         - "--http.api=eth,net,web3,txpool"
         - "--ws"
         - "--ws.addr=0.0.0.0"
+        - "--cache=3000"
         volumeMounts:
         - name: data
           mountPath: /root/.ethereum
           subPath: geth-data
         ports:
-        - name: geth-http
+        - name: rinkeby-http
           containerPort: 8545
-        - name: geth-p2p
+        - name: rinkeby-p2p
           containerPort: 30303
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: geth
+          claimName: geth-rinkeby
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: geth-exporter
+  name: export-rinkeby
   labels:
-    app: geth-exporter
+    app: export-rinkeby
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: geth-exporter
+      app: export-rinkeby
   template:
     metadata:
       labels:
-        app: geth-exporter
+        app: export-rinkeby
     spec:
       containers:
       - image: hunterlong/gethexporter:latest
-        name: geth-exporter
+        name: export-rinkeby
         env:
           - name: GETH
-            value: "http://geth.default:8545"
+            value: "http://geth-rinkeby.default:8545"
         ports:
-        - name: geth-exporter
+        - name: export-rinkeby
           containerPort: 9090
 ---
 
 kind: Service
 apiVersion: v1
 metadata:
-  name: geth-exporter
+  name: export-rinkeby
   labels:
-    app: geth-exporter
+    app: export-rinkeby
 spec:
   selector:
-    app: geth-exporter
+    app: export-rinkeby
   ports:
-  - name: geth-exporter
+  - name: export-rinkeby
     port: 9090
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: geth
+  name: geth-rinkeby
   labels:
-    app: geth
+    app: geth-rinkeby
 spec:
   selector:
-    app: geth
+    app: geth-rinkeby
   ports:
-  - name: geth-p2p
+  - name: rinkeby-p2p
     port: 30303
-  - name: geth-http
+  - name: rinkeby-http
     port: 8545
