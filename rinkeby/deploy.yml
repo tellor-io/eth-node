@@ -26,7 +26,7 @@ spec:
         - "--http.api=eth,net,web3,txpool"
         - "--ws"
         - "--ws.addr=0.0.0.0"
-        - "--cache=3000"
+        - "--cache=1024"
         volumeMounts:
         - name: data
           mountPath: /root/.ethereum
@@ -39,7 +39,7 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: geth-rinkeby
+          claimName: geth-r
 ---
 apiVersion: apps/v1
 kind: Deployment

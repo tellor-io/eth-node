@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - ok"
 spec:
   rules:
-  - host: "eth-rinkeby.tellor.io"
+  - host: "rinkeby.tellor.io"
     http:
       paths:
         - backend:

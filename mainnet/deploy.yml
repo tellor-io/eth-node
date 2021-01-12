@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: geth
+  name: geth-mainnet
   labels:
-    app: geth
+    app: geth-mainnet
 spec:
-  serviceName: geth
+  serviceName: geth-mainnet
   replicas: 1
   selector:
     matchLabels:
-      app: geth
+      app: geth-mainnet
   template:
     metadata:
       labels:
-        app: geth
+        app: geth-mainnet
     spec:
       containers:
       - image: ethereum/client-go:latest
-        name: geth
+        name: geth-mainnet
         args:
         - "--http"
         - "--http.addr=0.0.0.0"
@@ -25,7 +25,7 @@ spec:
         - "--http.api=eth,net,web3,txpool"
         - "--ws"
         - "--ws.addr=0.0.0.0"
-        - "--cache=3000"
+        - "--cache=1024"
         volumeMounts:
         - name: data
           mountPath: /root/.ethereum
@@ -61,7 +61,7 @@ spec:
         name: export-mainnet
         env:
           - name: GETH
-            value: "http://geth.default:8545"
+            value: "http://geth-mainnet.default:8545"
         ports:
         - name: export-mainnet
           containerPort: 9090
@@ -83,12 +83,12 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: geth
+  name: geth-mainnet
   labels:
-    app: geth
+    app: geth-mainnet
 spec:
   selector:
-    app: geth
+    app: geth-mainnet
   ports:
   - name: mainnet-p2p
     port: 30303

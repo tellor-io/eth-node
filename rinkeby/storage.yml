@@ -1,19 +1,10 @@
-# apiVersion: storage.k8s.io/v1
-# kind: StorageClass
-# metadata:
-#   name: ssd-rinkeby
-# provisioner: kubernetes.io/gce-pd
-# parameters:
-#   type: pd-ssd
-# ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: geth-rinkeby
+  name: geth-r
 spec:
-  # storageClassName: rinkeby
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi 
+      storage: 150Gi
