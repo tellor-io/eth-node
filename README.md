@@ -14,7 +14,8 @@ htpasswd -c auth geth
 
  - ### Create a basic auth secret:
 ```bash
-kubectl create secret generic geth --from-file=auth
+export NETWORK=mainnet
+kubectl create secret generic geth-$NETWORK --from-file=auth
 ```
 
 

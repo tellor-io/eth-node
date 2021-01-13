@@ -93,5 +93,7 @@ spec:
   ports:
   - name: rinkeby-p2p
     port: 30303
+    targetPort: rinkeby-p2p
   - name: rinkeby-http
     port: 8545
+    targetPort: rinkeby-http

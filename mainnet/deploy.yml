@@ -92,5 +92,7 @@ spec:
   ports:
   - name: mainnet-p2p
     port: 30303
+    targetPort: mainnet-p2p
   - name: mainnet-http
     port: 8545
+    targetPort: mainnet-http
