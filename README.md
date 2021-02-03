@@ -36,3 +36,11 @@ kubectl apply -f $NETWORK/storage.yml
 kubectl apply -f $NETWORK/deploy.yml
 kubectl apply -f $NETWORK/ingress.yml
 ```
+
+ - ### Test the connection
+```
+ curl -H "Content-Type: application/json" \
+    -X POST \
+    --data '{"jsonrpc":"2.0","method":"eth_chainId","id":1}' \
+    http://user:pass@mainnet.tellor.io
+ ```
