@@ -26,6 +26,8 @@ spec:
         - "--http.api=eth,net,web3,txpool"
         - "--ws"
         - "--ws.addr=0.0.0.0"
+        - "--ws.origins=*"
+        - "--ws.api=eth,net,web3,txpool"
         - "--cache=1024"
         volumeMounts:
         - name: data
@@ -34,6 +36,8 @@ spec:
         ports:
         - name: rinkeby-http
           containerPort: 8545
+        - name: rinkeby-ws
+          containerPort: 8546
         - name: rinkeby-p2p
           containerPort: 30303
       volumes:
@@ -97,3 +101,6 @@ spec:
   - name: rinkeby-http
     port: 8545
     targetPort: rinkeby-http
+  - name: rinkeby-ws
+    port: 8546
+    targetPort: rinkeby-ws
