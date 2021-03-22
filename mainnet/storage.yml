@@ -9,11 +9,11 @@ parameters:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: geth
+  name: geth-m
 spec:
   storageClassName: ssd
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 500Gi
+      storage: 700Gi

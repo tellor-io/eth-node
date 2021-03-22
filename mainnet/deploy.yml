@@ -38,7 +38,7 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: geth
+          claimName: geth-m
 ---
 apiVersion: apps/v1
 kind: Deployment
