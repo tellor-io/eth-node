@@ -17,6 +17,7 @@ spec:
     spec:
       containers:
       - image: ethereum/client-go:latest
+        imagePullPolicy: Always
         name: geth-mainnet
         args:
         - "--http"
