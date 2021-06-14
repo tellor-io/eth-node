@@ -26,6 +26,8 @@ spec:
         - "--http.api=eth,net,web3,txpool"
         - "--ws"
         - "--ws.addr=0.0.0.0"
+        - "--ws.origins=*"
+        - "--ws.api=eth,net,web3,txpool"
         - "--cache=1024"
         volumeMounts:
         - name: data
@@ -34,6 +36,8 @@ spec:
         ports:
         - name: mainnet-http
           containerPort: 8545
+        - name: mainnet-ws
+          containerPort: 8546
         - name: mainnet-p2p
           containerPort: 30303
       volumes:
@@ -97,3 +101,7 @@ spec:
   - name: mainnet-http
     port: 8545
     targetPort: mainnet-http
+  - name: mainnet-ws
+    port: 8546
+    targetPort: mainnet-ws
+
